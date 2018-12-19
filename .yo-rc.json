@@ -1,0 +1,33 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.blackeagles"
+    },
+    "jhipsterVersion": "5.7.1",
+    "applicationType": "monolith",
+    "baseName": "Margaret",
+    "packageName": "com.blackeagles",
+    "packageFolder": "com/blackeagles",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "ZjFlOTBhMGMxMDBhMmZkMzZmODIwM2QzZTk3ODg1OGRjZWYyZjNmMzU2MTIxZmY2NjA3OGYwOTZhYzQ3MzgyMzRmOTBmYTI1MTQxNDE2NjJhZTQ3ZmQ4ZDM3NDE1MjI0ODQxMGU2MjM4NTdlODk5MWIwNGY4NjY2YzI4NjIxNzM=",
+    "clientFramework": "react",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "otherModules": [],
+    "enableTranslation": false
+  }
+}

@@ -1,0 +1,16 @@
+version: '2'
+services:
+    margaret-mongodb:
+        image: mongo:4.0.2
+        ports:
+            - "27017:27017"
+        command: mongos --configdb margaret-mongodb-config
+    margaret-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    margaret-mongodb-config:
+        image: mongo:4.0.2
+        container_name: margaret-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db
