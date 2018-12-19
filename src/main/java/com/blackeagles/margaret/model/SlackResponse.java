@@ -4,7 +4,17 @@ import java.util.Objects;
 
 public class SlackResponse {
 
+  private String responseType;
   private String text;
+
+  public String getResponseType() {
+    return responseType;
+  }
+
+  public SlackResponse setResponseType(final String responseType) {
+    this.responseType = responseType;
+    return this;
+  }
 
   public String getText() {
     return text;
@@ -24,11 +34,12 @@ public class SlackResponse {
       return false;
     }
     final SlackResponse that = (SlackResponse) o;
-    return Objects.equals(text, that.text);
+    return Objects.equals(responseType, that.responseType) &&
+        Objects.equals(text, that.text);
   }
 
   @Override
   public final int hashCode() {
-    return Objects.hash(text);
+    return Objects.hash(responseType, text);
   }
 }

@@ -11,6 +11,7 @@ public class TestController {
   @PostMapping("/worst")
   public SlackResponse worst() {
     return new SlackResponse()
+        .setResponseType("in_channel")
         .setText("Daniel is worst");
   }
 
