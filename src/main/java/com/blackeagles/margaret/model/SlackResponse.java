@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SlackResponse {
 
+  public static final String RESPONSE_TYPE_IN_CHANNEL = "in_channel";
+  public static final String RESPONSE_TYPE_EPHEMERAL = "ephemeral";
+
   private String responseType;
   private String text;
 
