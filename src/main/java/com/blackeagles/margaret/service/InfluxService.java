@@ -25,7 +25,7 @@ public class InfluxService {
    this.herokuProperties = herokuProperties;
   }
 
-  public List<FloorPower> getMeanPower(ZonedDateTime beginTime, ZonedDateTime endTime) {
+  public List<FloorPower> getMeanPower(ZonedDateTime begin, ZonedDateTime end) {
     List<FloorPower> floorPowers = new ArrayList<>();
 
     for (String phase : herokuProperties.getPhases()) {
@@ -35,7 +35,7 @@ public class InfluxService {
       floorPowers.add(floorPower);
     }
 
-    floorPowers.sort((f1, f2) -> f1.getPower() - f2.getPower());
+//    floorPowers.sort((f1, f2) -> f1.getPower() - f2.getPower());
 
     return floorPowers;
   }
