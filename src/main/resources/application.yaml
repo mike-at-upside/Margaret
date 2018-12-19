@@ -1,2 +1,5 @@
 server:
   port: 7079
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
