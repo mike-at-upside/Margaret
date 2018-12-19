@@ -3,3 +3,8 @@ server:
 spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
+
+  influx:
+    url: ${INFLUX_URL}
+    username: ${INFLUX_USERNAME}
+    password: ${INFLUX_PASSWORD}
