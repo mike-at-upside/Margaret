@@ -13,6 +13,8 @@ import com.blackeagles.margaret.service.InfluxService;
 @Component
 public class ScheduledSlack {
 
+  private static final int MINUTES = 5;
+
   private final InfluxService influxService;
   private Quinton quinton;
 
@@ -21,10 +23,10 @@ public class ScheduledSlack {
     this.influxService = influxService;
   }
 
-  @Scheduled(fixedDelay = 5 * 60 * 1000)
+  @Scheduled(fixedDelay = MINUTES * 60 * 1000)
   public void sendFiveMinuteDigestToSlack() {
     ZonedDateTime end = ZonedDateTime.now();
-    ZonedDateTime begin = end.minusMinutes(5);
+    ZonedDateTime begin = end.minusMinutes(MINUTES);
     final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
     quinton.say(floorPowerListToString(meanPowers));
   }
@@ -32,7 +34,7 @@ public class ScheduledSlack {
   private String floorPowerListToString(List<FloorPower> floorPowers) {
     StringBuilder sb = new StringBuilder();
     for (FloorPower floorPower : floorPowers) {
-      sb.append("Floor " + floorPower.getFloor() + " used " + floorPower.getPower() + " RANDOM in the last 5 minutes\n");
+      sb.append(floorPower.getSlackString(MINUTES) + "\n");
     }
     return sb.toString();
   }

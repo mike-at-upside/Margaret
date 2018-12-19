@@ -6,5 +6,5 @@ spring:
 
   influx:
     url: ${INFLUX_URL}
-    username: ${INFLUX_USERNAME}
+    user: ${INFLUX_USER}
     password: ${INFLUX_PASSWORD}

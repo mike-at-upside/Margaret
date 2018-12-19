@@ -4,7 +4,9 @@ import java.util.Objects;
 
 public class FloorPower {
 
-  public String floor;
+  private static final String PREFIX = "emon/emontx3/power";
+
+  public String floor; // e.g. emon/emontx3/power1
   public int power;
 
   public String getFloor() {
@@ -16,13 +18,25 @@ public class FloorPower {
     return this;
   }
 
-  public int getPower() {
+  public int getPowerWatts() {
     return power;
+  }
+
+  public double getPowerKilowatts() {
+    return getPowerWatts() / 1000d;
   }
 
   public FloorPower setPower(final int power) {
     this.power = power;
     return this;
+  }
+
+  public String getId() {
+    return floor.replace(PREFIX, "");
+  }
+
+  public String getSlackString(int minutes) {
+    return String.format("Floor %s used an average of %s kW in the last %d minutes", this.getId(), this.getPowerKilowatts(), minutes);
   }
 
   @Override
