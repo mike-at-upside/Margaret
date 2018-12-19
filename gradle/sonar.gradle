@@ -39,7 +39,6 @@ sonarqube {
 
         property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
         property "sonar.java.codeCoveragePlugin", "jacoco"
-        property "sonar.testExecutionReportPaths", "${project.buildDir}/test-results/jest/TESTS-results-sonar.xml"
         property "sonar.typescript.lcov.reportPaths", "${project.buildDir}/test-results/lcov.info"
         property "sonar.junit.reportPaths", "${project.buildDir}/test-results/test"
         property "sonar.sources", "${project.projectDir}/src/main/"

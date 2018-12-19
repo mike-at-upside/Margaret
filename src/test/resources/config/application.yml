@@ -17,11 +17,6 @@
 spring:
     application:
         name: Margaret
-    data:
-        mongodb:
-            host: localhost
-            port: 0
-            database: Margaret
     mail:
         host: localhost
     messages:
@@ -55,14 +50,11 @@ jhipster:
             host: localhost
             port: 5000
             queue-size: 512
-    mail:
-        from: test@localhost
-        base-url: http://127.0.0.1:8080
     security:
         authentication:
             jwt:
                 # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-                base64-secret: ZjFlOTBhMGMxMDBhMmZkMzZmODIwM2QzZTk3ODg1OGRjZWYyZjNmMzU2MTIxZmY2NjA3OGYwOTZhYzQ3MzgyMzRmOTBmYTI1MTQxNDE2NjJhZTQ3ZmQ4ZDM3NDE1MjI0ODQxMGU2MjM4NTdlODk5MWIwNGY4NjY2YzI4NjIxNzM=
+                base64-secret: NzMzZjExMmY1ZjBiY2Q3MjA3ZDczMTU5NzM5ZWNlYjY2M2NiNjZkZGJlMDg2YjRiOTNlNDNjZTk2NTNiYWI4ODljNTY3NmQwMDBkYTAyNTY2ZTFiYzRhMDVkNmIxZmZmZjhlYWRiM2EzY2VlYjljY2MzZjE1ZWI0YjliN2MwODE=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
