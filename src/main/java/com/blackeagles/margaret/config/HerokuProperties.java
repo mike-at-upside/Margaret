@@ -6,4 +6,8 @@ public class HerokuProperties {
     return System.getenv("QUINTON_URL");
   }
 
+  public String[] getPhases() {
+    return System.getenv("PHASES").split(",");
+  }
+
 }

@@ -1,5 +1,6 @@
 package com.blackeagles.margaret;
 
+import org.influxdb.InfluxDB;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
