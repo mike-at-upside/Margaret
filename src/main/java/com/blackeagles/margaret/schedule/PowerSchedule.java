@@ -15,7 +15,7 @@ public class PowerSchedule {
     this.quinton = quinton;
   }
 
-  @Scheduled(fixedDelay = 5000)
+  @Scheduled(fixedDelay = 5 * 60 * 1000)
   public void sendStatsToSlack() {
     quinton.say("hello");
   }
