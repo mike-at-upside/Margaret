@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+BASE=$(realpath $(dirname ${0}))
+docker run -v $BASE/telegraf.conf:/etc/telegraf/telegraf.conf:ro telegraf
