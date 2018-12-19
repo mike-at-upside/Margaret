@@ -1,6 +1,8 @@
 package com.blackeagles.margaret.service;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -42,14 +44,17 @@ public class InfluxService {
       sb.append("SELECT mean(value) FROM " + SERIES + " ");
       sb.append("WHERE topic = $topic ");
       sb.append("AND time >= $begin ");
-//      sb.append("AND time < $end ");
+      sb.append("AND time < $end ");
+
+      DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss.S");
 
       final BoundParameterQuery query = BoundParameterQuery.QueryBuilder
           .newQuery(sb.toString())
           .forDatabase(DATABASE)
           .bind("topic", phase)
-          .bind("begin", begin.toEpochSecond() * 1000)
-          .bind("end", end.toEpochSecond() * 1000)
+          .bind("begin", begin.format(dateFormat) + "T" + begin.format(timeFormat) + "Z")
+          .bind("end", end.format(dateFormat) + "T" + end.format(timeFormat) + "Z")
           .create();
 
       final QueryResult queryResult = influxDB.query(query);
