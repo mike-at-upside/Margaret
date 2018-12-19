@@ -1,7 +1,12 @@
 package com.blackeagles.margaret.model;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SlackResponse {
 
   private String responseType;
@@ -41,5 +46,13 @@ public class SlackResponse {
   @Override
   public final int hashCode() {
     return Objects.hash(responseType, text);
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", SlackResponse.class.getSimpleName() + "[", "]")
+        .add("responseType='" + responseType + "'")
+        .add("text='" + text + "'")
+        .toString();
   }
 }
