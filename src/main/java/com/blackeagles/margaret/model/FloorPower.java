@@ -1,5 +1,7 @@
 package com.blackeagles.margaret.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 public class FloorPower {
@@ -18,6 +20,11 @@ public class FloorPower {
     return this;
   }
 
+  public FloorPower setPower(final int power) {
+    this.power = power;
+    return this;
+  }
+
   public int getPowerWatts() {
     return power;
   }
@@ -26,17 +33,19 @@ public class FloorPower {
     return getPowerWatts() / 1000d;
   }
 
-  public FloorPower setPower(final int power) {
-    this.power = power;
-    return this;
-  }
-
   public String getId() {
     return floor.replace(PREFIX, "");
   }
 
+  public double getKilowattHours(int minutes) {
+    int hours = 60 / minutes;
+    double kilowattHours = this.getPowerKilowatts() / hours;
+    return round(kilowattHours, 2);
+  }
+
   public String getSlackString(int minutes) {
-    return String.format("Floor %s used an average of %s kW in the last %d minutes", this.getId(), this.getPowerKilowatts(), minutes);
+    return String.format("Floor %s used an average of %s kW (%s kWh) over the last %d minutes",
+        this.getId(), this.getPowerKilowatts(), this.getKilowattHours(minutes), minutes);
   }
 
   @Override
@@ -55,5 +64,13 @@ public class FloorPower {
   @Override
   public final int hashCode() {
     return Objects.hash(floor, power);
+  }
+
+  public static double round(double value, int places) {
+    if (places < 0) throw new IllegalArgumentException();
+
+    BigDecimal bd = new BigDecimal(value);
+    bd = bd.setScale(places, RoundingMode.HALF_UP);
+    return bd.doubleValue();
   }
 }

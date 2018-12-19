@@ -2,6 +2,7 @@ package com.blackeagles.margaret.service;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -54,17 +55,15 @@ public class InfluxService {
       final QueryResult queryResult = influxDB.query(query);
 
       final List<MeanEntry> meanEntries = resultMapper.toPOJO(queryResult, MeanEntry.class);
-//      System.out.println("availableEnergyMeasurements = " + meanEntries);
 
       int meanPower = meanEntries.isEmpty() ? 0 : meanEntries.get(0).getMean();
       FloorPower floorPower = new FloorPower()
           .setFloor(phase)
           .setPower(meanPower);
-      System.out.println("floorPower = " + floorPower);
       floorPowers.add(floorPower);
     }
 
-//    floorPowers.sort((f1, f2) -> f1.getPowerWatts() - f2.getPowerWatts());
+    floorPowers.sort(Comparator.comparingInt(FloorPower::getPowerWatts));
 
     return floorPowers;
   }

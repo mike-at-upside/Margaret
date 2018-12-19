@@ -1,6 +1,7 @@
 package com.blackeagles.margaret.schedule;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,6 +13,8 @@ import com.blackeagles.margaret.service.InfluxService;
 
 @Component
 public class ScheduledSlack {
+
+  private static final List<String> MEDALS = Arrays.asList(":first_place_medal:", ":second_place_medal:", ":third_place_medal:");
 
   private static final int MINUTES = 5;
 
@@ -33,8 +36,12 @@ public class ScheduledSlack {
 
   private String floorPowerListToString(List<FloorPower> floorPowers) {
     StringBuilder sb = new StringBuilder();
+    int medalIndex = 0;
+
     for (FloorPower floorPower : floorPowers) {
+      sb.append(MEDALS.get(medalIndex) + " ");
       sb.append(floorPower.getSlackString(MINUTES) + "\n");
+      medalIndex++;
     }
     return sb.toString();
   }
