@@ -12,4 +12,8 @@ public class MargaretConfig {
   public HerokuProperties herokuProperties() {
     return new HerokuProperties();
   }
+
+  @Bean Quinton quinton(HerokuProperties herokuProperties) {
+    return new Quinton(herokuProperties);
+  }
 }

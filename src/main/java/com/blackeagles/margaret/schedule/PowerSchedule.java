@@ -3,20 +3,21 @@ package com.blackeagles.margaret.schedule;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.blackeagles.margaret.config.HerokuProperties;
+import com.blackeagles.margaret.Quinton;
 
 @Component
 public class PowerSchedule {
 
-  private final HerokuProperties herokuProperties;
+  private Quinton quinton;
 
-  public PowerSchedule(HerokuProperties herokuProperties) {
-    this.herokuProperties = herokuProperties;
+
+  public PowerSchedule(Quinton quinton) {
+    this.quinton = quinton;
   }
 
   @Scheduled(fixedDelay = 5000)
   public void sendStatsToSlack() {
-    System.out.println(herokuProperties.getQuintonUrl());
+    quinton.say("hello");
   }
 
 }
