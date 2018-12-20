@@ -24,8 +24,8 @@ public class PowerService {
       ZonedDateTime begin = end.minusHours(1);
       final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
       final FloorPower bestFloor = meanPowers.get(0);
-      return String.format("Floor %s performed best using an average of %s kW (%s kWh) over the last %d minutes",
-          bestFloor.getId(), bestFloor.getPowerKilowatts(), bestFloor.getKilowattHours(60), 60);
+      return String.format("Floor %s performed best using %s kW over the last hour",
+          bestFloor.getId(), bestFloor.getPowerKilowatts());
     } else {
       return "couldn't get best for period: " + normalisedText;
     }
@@ -39,8 +39,8 @@ public class PowerService {
       ZonedDateTime begin = end.minusHours(1);
       final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
       final FloorPower bestFloor = meanPowers.get(meanPowers.size() - 1);
-      return String.format("Floor %s performed worst using an average of %s kW (%s kWh) over the last %d minutes",
-          bestFloor.getId(), bestFloor.getPowerKilowatts(), bestFloor.getKilowattHours(60), 60);
+      return String.format("Floor %s performed worst using %s kW over the last hour",
+          bestFloor.getId(), bestFloor.getPowerKilowatts());
     } else {
       return "couldn't get worst for period: " + normalisedText;
     }
