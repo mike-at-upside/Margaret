@@ -73,4 +73,8 @@ public class FloorPower {
     bd = bd.setScale(places, RoundingMode.HALF_UP);
     return bd.doubleValue();
   }
+
+  public String toString() {
+    return floor + " " + power;
+  }
 }

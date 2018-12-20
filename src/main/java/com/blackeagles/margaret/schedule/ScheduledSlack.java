@@ -28,10 +28,37 @@ public class ScheduledSlack {
 
   @Scheduled(fixedDelay = MINUTES * 60 * 1000)
   public void sendFiveMinuteDigestToSlack() {
-    ZonedDateTime end = ZonedDateTime.now();
-    ZonedDateTime begin = end.minusMinutes(MINUTES);
-    final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
-    quinton.say(floorPowerListToString(meanPowers));
+    ZonedDateTime now = ZonedDateTime.now();
+    ZonedDateTime fiveMinutesAgo = now.minusMinutes(MINUTES);
+    final List<FloorPower> meanFiveMinutesPowers = influxService.getMeanPower(fiveMinutesAgo, now);
+    quinton.say(floorPowerListToString(meanFiveMinutesPowers));
+
+
+
+
+
+    ZonedDateTime oneHourAgo = now.minusHours(1);
+    final List<FloorPower> meanOneHourPowers = influxService.getMeanPower(oneHourAgo.minusMinutes(5), oneHourAgo);
+
+    int totalOneHourAgo = 0;
+    for (FloorPower floorPower : meanOneHourPowers) {
+      totalOneHourAgo = totalOneHourAgo + floorPower.getPowerWatts();
+    }
+
+    int totalFiveMinutes = 0;
+    for (FloorPower floorPower : meanFiveMinutesPowers) {
+      totalFiveMinutes = totalFiveMinutes + floorPower.getPowerWatts();
+    }
+
+    if (totalFiveMinutes > totalOneHourAgo) {
+      double percentageDifference = 100 * (totalFiveMinutes-totalOneHourAgo)/(double)totalFiveMinutes;
+      quinton.say(String.format("Easy tiger, you're using %s kW right now; (%s%% *more* than the same time an hour ago) :tiger2:",
+          totalFiveMinutes/1000d, FloorPower.round(percentageDifference, 2)));
+    } else {
+      double percentageDifference = 100 * (totalOneHourAgo-totalFiveMinutes)/(double)totalOneHourAgo;
+      quinton.say(String.format("Congrats! you're using %s kW right now; (%s%% *less* than the same time an hour ago) :beret-parrot:",
+          totalFiveMinutes/1000d, FloorPower.round(percentageDifference, 1)));
+    }
   }
 
   private String floorPowerListToString(List<FloorPower> floorPowers) {
