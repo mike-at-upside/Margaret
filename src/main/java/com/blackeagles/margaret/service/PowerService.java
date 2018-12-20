@@ -2,6 +2,7 @@ package com.blackeagles.margaret.service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,8 @@ import com.blackeagles.margaret.model.FloorPower;
 
 @Component
 public class PowerService {
+
+  private static final Pattern PATTERN = Pattern.compile("last [0-9]+ minutes");
 
   private final InfluxService influxService;
 
@@ -19,7 +22,15 @@ public class PowerService {
   public String bestPeriod(String text) {
     String normalisedText = normaliseText(text);
 
-    if (normalisedText.equals("last hour") || normalisedText.equals("one hour")) {
+    if (PATTERN.matcher(normalisedText).matches()) {
+      int minutes = Integer.parseInt(normalisedText.replaceAll("\\D+", ""));
+      ZonedDateTime end = ZonedDateTime.now();
+      ZonedDateTime begin = end.minusMinutes(minutes);
+      final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
+      final FloorPower bestFloor = meanPowers.get(0);
+      return String.format(":party-parrot: Floor %s performed best using %s kW over the last %d minutes :party-parrot:",
+          bestFloor.getId(), bestFloor.getPowerKilowatts(), minutes);
+    } else if (normalisedText.equals("last hour") || normalisedText.equals("one hour")) {
       ZonedDateTime end = ZonedDateTime.now();
       ZonedDateTime begin = end.minusHours(1);
       final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
@@ -31,7 +42,7 @@ public class PowerService {
       ZonedDateTime begin = end.minusHours(24);
       final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
       final FloorPower bestFloor = meanPowers.get(0);
-      return String.format(":party-parrot: Floor %s performed best using %s kW over the 24 hours :party-parrot:",
+      return String.format(":party-parrot: Floor %s performed best using %s kW over the last 24 hours :party-parrot:",
           bestFloor.getId(), bestFloor.getPowerKilowatts());
     } else {
       return "couldn't get best for period: " + normalisedText;
@@ -64,7 +75,7 @@ public class PowerService {
     String trimmedText = text == null ? "" : text.trim();
 
     if (trimmedText.isEmpty()) {
-      return "now";
+      return "last 5 minutes";
     }
 
     return trimmedText.replaceAll(" +", " ").toLowerCase();
