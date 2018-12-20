@@ -13,6 +13,8 @@ public class PowerService {
 
   private static final Pattern MINUTES_PATTERN = Pattern.compile("last [0-9]+ minutes");
   private static final Pattern HOURS_PATTERN = Pattern.compile("last [0-9]+ hours");
+  private static final Pattern DAYS_PATTERN = Pattern.compile("last [0-9]+ days");
+  private static final Pattern WEEKS_PATTERN = Pattern.compile("last [0-9]+ weeks");
 
   private final InfluxService influxService;
 
@@ -42,6 +44,24 @@ public class PowerService {
       return String.format(
           ":party-parrot: Floor %s performed best using an average of %s kW over the last %d hours :party-parrot:",
           bestFloor.getId(), bestFloor.getPowerKilowatts(), hours);
+    } else if (DAYS_PATTERN.matcher(normalisedText).matches()) {
+      int days = Integer.parseInt(normalisedText.replaceAll("\\D+", ""));
+      ZonedDateTime end = ZonedDateTime.now();
+      ZonedDateTime begin = end.minusDays(days);
+      final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
+      final FloorPower bestFloor = meanPowers.get(0);
+      return String.format(
+          ":party-parrot: Floor %s performed best using an average of %s kW over the last %d days :party-parrot:",
+          bestFloor.getId(), bestFloor.getPowerKilowatts(), days);
+    } else if (WEEKS_PATTERN.matcher(normalisedText).matches()) {
+      int weeks = Integer.parseInt(normalisedText.replaceAll("\\D+", ""));
+      ZonedDateTime end = ZonedDateTime.now();
+      ZonedDateTime begin = end.minusWeeks(weeks);
+      final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
+      final FloorPower bestFloor = meanPowers.get(0);
+      return String.format(
+          ":party-parrot: Floor %s performed best using an average of %s kW over the last %d weeks :party-parrot:",
+          bestFloor.getId(), bestFloor.getPowerKilowatts(), weeks);
     } else if (normalisedText.equals("last hour") || normalisedText.equals("one hour")) {
       ZonedDateTime end = ZonedDateTime.now();
       ZonedDateTime begin = end.minusHours(1);
@@ -84,6 +104,24 @@ public class PowerService {
       return String.format(
           ":skull: Floor %s performed worst using an average of %s kW over the last %d hours :skull:",
           worstFloor.getId(), worstFloor.getPowerKilowatts(), hours);
+    } else if (DAYS_PATTERN.matcher(normalisedText).matches()) {
+      int days = Integer.parseInt(normalisedText.replaceAll("\\D+", ""));
+      ZonedDateTime end = ZonedDateTime.now();
+      ZonedDateTime begin = end.minusDays(days);
+      final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
+      final FloorPower worstFloor = meanPowers.get(meanPowers.size() - 1);
+      return String.format(
+          ":skull: Floor %s performed worst using an average of %s kW over the last %d days :skull:",
+          worstFloor.getId(), worstFloor.getPowerKilowatts(), days);
+    } else if (WEEKS_PATTERN.matcher(normalisedText).matches()) {
+      int weeks = Integer.parseInt(normalisedText.replaceAll("\\D+", ""));
+      ZonedDateTime end = ZonedDateTime.now();
+      ZonedDateTime begin = end.minusWeeks(weeks);
+      final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
+      final FloorPower worstFloor = meanPowers.get(meanPowers.size() - 1);
+      return String.format(
+          ":skull: Floor %s performed worst using an average of %s kW over the last %d weeks :skull:",
+          worstFloor.getId(), worstFloor.getPowerKilowatts(), weeks);
     } else if (normalisedText.equals("last hour") || normalisedText.equals("one hour")) {
       ZonedDateTime end = ZonedDateTime.now();
       ZonedDateTime begin = end.minusHours(1);
