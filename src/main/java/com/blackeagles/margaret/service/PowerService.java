@@ -26,6 +26,14 @@ public class PowerService {
       final FloorPower bestFloor = meanPowers.get(0);
       return String.format(":party-parrot: Floor %s performed best using %s kW over the last hour :party-parrot:",
           bestFloor.getId(), bestFloor.getPowerKilowatts());
+    } else if (normalisedText.equals("day") || normalisedText.equals("last day") || normalisedText.equals("24 hours")) {
+      ZonedDateTime end = ZonedDateTime.now();
+      ZonedDateTime begin = end.minusHours(24);
+      final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
+      final FloorPower bestFloor = meanPowers.get(0);
+      return String.format(
+          ":party-parrot: Floor %s performed best using an average of %s kW (%s kWh) over the last 24 hours :party-parrot:",
+          bestFloor.getId(), bestFloor.getPowerKilowatts(), bestFloor.getKilowattHours(1440));
     } else {
       return "couldn't get best for period: " + normalisedText;
     }
@@ -38,9 +46,17 @@ public class PowerService {
       ZonedDateTime end = ZonedDateTime.now();
       ZonedDateTime begin = end.minusHours(1);
       final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
-      final FloorPower bestFloor = meanPowers.get(meanPowers.size() - 1);
+      final FloorPower worstFloor = meanPowers.get(meanPowers.size() - 1);
       return String.format(":skull: Floor %s performed worst using %s kW over the last hour :skull:",
-          bestFloor.getId(), bestFloor.getPowerKilowatts());
+          worstFloor.getId(), worstFloor.getPowerKilowatts());
+    } else if (normalisedText.equals("day") || normalisedText.equals("last day") || normalisedText.equals("24 hours")) {
+      ZonedDateTime end = ZonedDateTime.now();
+      ZonedDateTime begin = end.minusHours(24);
+      final List<FloorPower> meanPowers = influxService.getMeanPower(begin, end);
+      final FloorPower worstFloor = meanPowers.get(meanPowers.size() - 1);
+      return String.format(
+          ":party-parrot: Floor %s performed worst using an average of %s kW (%s kWh) over the last 24 hours :party-parrot:",
+          worstFloor.getId(), worstFloor.getPowerKilowatts(), worstFloor.getKilowattHours(1440));
     } else {
       return "couldn't get worst for period: " + normalisedText;
     }
