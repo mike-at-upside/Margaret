@@ -53,11 +53,11 @@ public class ScheduledSlack {
     if (totalFiveMinutes > totalOneHourAgo) {
       double percentageDifference = 100 * (totalFiveMinutes-totalOneHourAgo)/(double)totalFiveMinutes;
 //      quinton.say(String.format("Easy tiger, you're using %s kW right now; (%s%% *more* than the same time an hour ago) :tiger2:",
-          totalFiveMinutes/1000d, FloorPower.round(percentageDifference, 2)));
+//          totalFiveMinutes/1000d, FloorPower.round(percentageDifference, 2)));
     } else {
       double percentageDifference = 100 * (totalOneHourAgo-totalFiveMinutes)/(double)totalOneHourAgo;
 //      quinton.say(String.format("Congrats! You're using %s kW right now; (%s%% *less* than the same time an hour ago) :beret-parrot:",
-          totalFiveMinutes/1000d, FloorPower.round(percentageDifference, 1)));
+//          totalFiveMinutes/1000d, FloorPower.round(percentageDifference, 1)));
     }
   }
 
